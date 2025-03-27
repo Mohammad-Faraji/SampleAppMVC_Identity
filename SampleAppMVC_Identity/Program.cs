@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using SampleAppMVC_Identity.Data.Context;
 using SampleAppMVC_Identity.Data.Models;
 using System;
@@ -21,7 +22,7 @@ namespace SampleAppMVC_Identity
 
 
             // تنظیمات Identity
-            builder.Services.AddIdentityCore<ApplicationUser>()
+            builder.Services.AddIdentity<ApplicationUser , IdentityRole>()
                      .AddEntityFrameworkStores<ApplicationDbContext>()
                      .AddDefaultTokenProviders();
 

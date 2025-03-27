@@ -1,13 +1,16 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SampleAppMVC_Identity.Data.Models;
+using SampleAppMVC_Identity.Data.Models.ViewModel;
 using SampleAppMVC_Identity.Models;
 
 namespace SampleAppMVC_Identity.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         // یک سرویس برای مدیریت کاربران (مثل ایجاد، حذف، ویرایش کاربران، تغییر رمز عبور و غیره) فراهم کند.
@@ -15,12 +18,10 @@ namespace SampleAppMVC_Identity.Controllers
         // یک سرویس برای مدیریت لاگین و لاگ‌آوت کاربران (مثل ورود به سیستم، خروج از سیستم، بررسی وضعیت لاگین و غیره) فراهم کند.
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        private readonly ILogger<HomeController> _logger;
+     
 
-        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager)
-        {
-
-            _logger = logger;
+        public HomeController( UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager)
+        {                 
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -31,16 +32,45 @@ namespace SampleAppMVC_Identity.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateUser()
+        public IActionResult Register()
         {
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel viewModel)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            // ایجاد کاربرجدید
+            var user = new ApplicationUser
+            {
+                Email = viewModel.Email,
+                UserName = viewModel.Email,
+                PhoneNumber = viewModel.PhoneNumber,
+                FullName = viewModel.FullName
+                
+            };
+            // این خط کد برای ایجاد یک کاربر جدید استفاده می‌شود.
+            var resultAddUser = await _userManager.CreateAsync(user,viewModel.Password);
+            if (resultAddUser.Succeeded) 
+            {
+                var additionalClaims = new List<Claim>()
+                {
+                    new Claim("Name" , user.FullName),
+                    new Claim("Email", user.Email),
+                    new Claim("UserName" , user.UserName)
+                };
+                await _signInManager.SignInWithClaimsAsync(user, true, additionalClaims);
+                return RedirectToAction("Index");
+            }
+
+
+            return View(viewModel);
+        }
 
 
         public IActionResult Privacy()

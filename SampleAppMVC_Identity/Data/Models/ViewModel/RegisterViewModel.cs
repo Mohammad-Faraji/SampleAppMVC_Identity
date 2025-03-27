@@ -1,6 +1,6 @@
 ﻿namespace SampleAppMVC_Identity.Data.Models.ViewModel
 {
-    public class CreateUserViewModel
+    public class RegisterViewModel
     {
         public string FullName { get; set; }
         public string Email { get; set; }
