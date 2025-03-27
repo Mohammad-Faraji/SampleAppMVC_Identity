@@ -1,3 +1,9 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SampleAppMVC_Identity.Data.Context;
+using SampleAppMVC_Identity.Data.Models;
+using System;
+
 namespace SampleAppMVC_Identity
 {
     public class Program
@@ -8,6 +14,17 @@ namespace SampleAppMVC_Identity
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // تنظیمات اتصال به دیتابیس
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStringDb")));
+
+
+            // تنظیمات Identity
+            builder.Services.AddIdentityCore<ApplicationUser>()
+                     .AddEntityFrameworkStores<ApplicationDbContext>()
+                     .AddDefaultTokenProviders();
+                
 
             var app = builder.Build();
 
