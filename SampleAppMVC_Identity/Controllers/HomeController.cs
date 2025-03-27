@@ -30,6 +30,19 @@ namespace SampleAppMVC_Identity.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult CreateUser()
+        {
+            return View();
+        }
+
+        //[HttpPost]
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+
         public IActionResult Privacy()
         {
             return View();
