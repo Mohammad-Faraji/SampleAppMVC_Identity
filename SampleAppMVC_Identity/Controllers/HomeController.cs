@@ -106,6 +106,15 @@ namespace SampleAppMVC_Identity.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> LogOut()
+        {
+            if (_signInManager.IsSignedIn(User))
+               await _signInManager?.SignOutAsync();
+            return RedirectToAction("Index");
+        }
+
+
         public IActionResult Privacy()
         {
             return View();
