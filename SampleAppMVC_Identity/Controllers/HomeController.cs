@@ -81,7 +81,28 @@ namespace SampleAppMVC_Identity.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
-            return View();
+            if (!ModelState.IsValid) 
+            {
+                return View(viewModel);
+            }
+            
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, viewModel.Password)) 
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(viewModel);
+            }
+
+            var additionalClamims = new List<Claim>()
+            {
+                  new Claim("Name", user.FullName), // افزودن claim سفارشی
+                new Claim("Email", user.Email) ,        // افزودن نقش کاربر
+                new Claim("UserName", user.UserName)         // افزودن نقش کاربر
+            };
+
+            await _signInManager.SignInWithClaimsAsync(user , true, additionalClamims);
+
+            return RedirectToAction("Index");
         }
 
 
