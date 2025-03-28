@@ -1,23 +1,19 @@
 ﻿@using SampleAppMVC_Identity.Data.Models.ViewModel
-@model RegisterViewModel
+@model LoginViewModel
 
 @{
-    ViewData["Title"] = "ثبت نام";
+    ViewData["Title"] = "Login";
 }
 
-<h1>Register</h1>
+<h1>Login</h1>
 
-<h4>RegisterDto</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateUser">
+        <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
@@ -28,13 +24,9 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" asp-action="Register" asp-controller="Home" value="Create" class="btn btn-primary" />
+                <input type="submit" asp-action="Login" asp-controller="Home" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -49,3 +41,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+

@@ -72,6 +72,18 @@ namespace SampleAppMVC_Identity.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        {
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {
